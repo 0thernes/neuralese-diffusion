@@ -1,6 +1,6 @@
 # ROADMAP (v2.0.0)
 
-100 items. Status counts: done 73, partial 3, planned 20, won't 4. "done" means shipped and the test passes as of v2.0.0; see docs/CLAIMS.md for measured numbers.
+100 items. Status counts: done 72, partial 4, planned 20, won't 4. "done" means shipped and the test passes as of v2.0.0; see docs/CLAIMS.md for measured numbers.
 
 | # | area | item | status | falsifiable test |
 |---|---|---|---|---|
@@ -50,7 +50,7 @@
 | 44 | v2 | v-prediction variant | planned | compare held-out loss at equal steps |
 | 45 | v2 | DDPM/DDIM both available | done | both samplers produce finite output |
 | 46 | v2 | latent diffusion on self-trained autoencoder | planned | reconstruction PSNR ≥ 25 dB |
-| 47 | v2 | classifier-free guidance sweep | done | S4 battery |
+| 47 | v2 | classifier-free guidance sweep | partial | S4 battery on v2 models not completed (stopped >2 h); g0 vs g3 measured in train2 |
 | 48 | v2 | probe accuracy at t=T/2 | done | in meta |
 | 49 | v2 | SAE on bottleneck | done | FVU, L0, dead features in meta |
 | 50 | v2 | UI for all 4 v2 modalities | done | smoke screenshots per modality |

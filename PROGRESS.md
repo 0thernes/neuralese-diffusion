@@ -33,3 +33,19 @@
 - 11:02 PT: audio run1 DONE (980 steps only, gen acc 0.49) → retraining audio 3600 s × 2 thr with checkpoints. Tests: v2.test 17/17 (S3 parity all 4 models). S5 PASS: Griffin-Lim round-trip judge acc 0.9375 = direct 0.9375 (n=32) → site/results2/s5_audio.json (re-run after retrain).
 - 11:05 PT: tools/eval.mjs supports v2 (mod2 → results2/eval_<mod>2.json); S4 eval pc3d2 N=40 started (nohup).
 - 11:00 PT (box clock; earlier 10:55/11:02/11:05 entries were mis-stamped, real ≈10:3x): R5 PASS 4/4; R7 PASS (sd-turbo 1-step unet+VAE ≈ 8.5–9.6 s, tiny-sd 20 steps CFG ≈ 105–130 s, box CPU under training load); R8 PASS: Stable Audio 3 small q4 5 s clip 8 steps ≈ 13–14 s total, RMS ≥ 0.061, prompt/seed log-mel distance ratio 6.3. WAVs → site/results2/audio/.
+
+## 2026-10-26 11:14 PT — increment 2 shipped
+- Bundle (11×3MB parts) pushed sequentially to stage-v2; trigger → unpack-stage success → main ad6c51f "v2 results: …" (single commit) → pages success.
+- Retraining (train2b, nohup, ckpt every 500 it) still running: image it800/1203s, video it600/1298s, audio it200/848s (CPU contended). eval pc3d2 N=40 running.
+- Next: on retrain finish → export2, s5, eval ×4, claims2, npm test, ship final commit; live smoke of v2 mods + LAB; tag v2.0.0.
+
+## 2026-10-26 12:13 PT — retrain (run 2) finished
+- CPU-contended, fewer steps than hoped. image 1793 steps g3 acc 0.37 (run1 0.286), FID-lite g3 585 vs g0 537 (floor 3.1) — still worse than g0;
+  audio 762 steps acc 0.48 (run1 0.486); video 1325 steps acc 0.10 (chance; run1 0.09). Honest: only image improved; video gen fails.
+- 12:16 PT export2 + S5 (0.8125→0.8125 PASS) + npm test 43/43; evals image2/audio2/video2 N=16 started (nohup); pc3d2 N=40 still running.
+- 12:16 PT release workflows retargeted to v2.0.0 (local), RELEASE_NOTES v2 written.
+- 12:50 PT live smoke (inc2, run1 weights) in progress: image2 sample/LENS/LAB/METRICS OK; header v1→v2 fix; smoke2 now also runs LAB node-importance.
+- app versions bumped to 2.0.0 (package, Android, iOS).
+- 12:53 PT evals (eval.mjs) not finished after ~2h on contended CPU → killed; using train2b DONE metrics (python, n=500) for CLAIMS.
+- 12:58 PT CLAIMS-v2/MODELS regenerated with plain verdicts (video at chance, image FID worse w/ CFG, S4 not completed); npm test 43/43.
+- 13:00 PT pushed ci commit ab2b83e (release workflows → v2.0.0) via connector (GITHUB_TOKEN can't edit workflows).

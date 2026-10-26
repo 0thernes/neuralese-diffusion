@@ -1,10 +1,10 @@
 {
  "S5": {
   "n": 32,
-  "judge_acc_direct": 0.9375,
-  "judge_acc_after_griffin_lim": 0.9375,
+  "judge_acc_direct": 0.8125,
+  "judge_acc_after_griffin_lim": 0.8125,
   "mean_spectral_convergence": 0.0020459762216459227,
   "pass": true
  },
- "model_sha256": "065f981b47eea9ac38d42a4fcacd683f9878b22e1d27d07b6a05162245a0c753"
+ "model_sha256": "35eae86642328648ae69db43469049e662cd109165c115849a3e19a4bf52cf2d"
 }

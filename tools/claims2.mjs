@@ -26,3 +26,13 @@ T.push(`| TAESD decoder (julienkay/taesd) | ≈1.2 M | ${(TAESD.file.bytes / 1e6
 for (const [m, j] of Object.entries(M)) if (j) T.push(`| ${m}2 self-trained (${j.dataset}) | ${(j.params_unet / 1e6).toFixed(2)} M | ${(j.bytes / 1e6).toFixed(1)} MB fp16 | all incl. phones | MIT (weights), dataset licences in STACK.md | ${j.train_steps} steps in ${j.train_seconds} s |`);
 T.push('', 'Not shipped: no ONNX text-to-video or text-to-3D model small enough for a browser was found on Hugging Face (2026-10-26); video and 3D stay on the self-trained tier.');
 fs.writeFileSync('docs/MODELS.md', T.join('\n') + '\n'); console.log('ok');
+// Plain-language verdicts (hand-written and checked against the table above; regenerate if the metrics change).
+{ const fs2 = await import('node:fs'); const p = 'docs/CLAIMS-v2.md'; fs2.appendFileSync(p, `
+## Plain verdict on the self-trained tier
+- **video2 generation fails.** Judge accuracy of generated clips is 0.100 with or without guidance, which is chance for 10 classes. The model denoises well (held-out ε-MSE 0.037), but it has not learned class-conditional motion in 1325 CPU steps.
+- **image2: guidance makes FID-lite worse** (585 with CFG g=3 vs 537 at g=0; real-vs-real floor 3). CFG raises class accuracy (0.118 → 0.370) at the cost of distribution match. Both are far from the floor.
+- **audio2:** guided samples are recognisable 48% of the time (chance 10%) and FID-lite improves slightly with guidance. This is still far from the floor (21).
+- **pc3d2 is the only self-trained model that passes S1 and S2.**
+- S4 (the JS hypothesis battery on v2 models) was **not run to completion**: it exceeded about 2 h on a contended CPU and was stopped. The metrics above come from the PyTorch judge (n=500) at the end of training.
+- All models were trained for 1 h of wall-clock on a shared 8-core CPU, alongside other jobs. These are honest small-budget results, not the quality ceiling of the architecture.
+`); }

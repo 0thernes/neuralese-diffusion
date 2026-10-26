@@ -21,11 +21,19 @@ Deviations from the prereg: R7 used the fp16 graphs directly on the CPU EP (no f
 
 | model | steps | held-out ε-MSE | judge acc (real test) | S1 gen acc g3 ≥ 0.70 | S2 FID-lite g3 < g0 | S3 parity | S4 battery (N=40) |
 |---|---|---|---|---|---|---|---|
-| image2 (Fashion-MNIST) | 2755 | 0.084 | 0.849 | 0.286 ○ | 591 vs 550 (floor 4) ○ | ● (test V2-S3) | — |
-| audio2 (FSDD spoken digits) | 980 | 0.109 | 0.920 | 0.486 ○ | 9827 vs 11923 (floor 24) ● | ● (test V2-S3) | — |
-| video2 (Moving-MNIST procedure on MNIST) | 2078 | 0.031 | 0.908 | 0.090 ○ | 23499 vs 24648 (floor 3) ● | ● (test V2-S3) | — |
+| image2 (Fashion-MNIST) | 1793 | 0.087 | 0.842 | 0.370 ○ | 585 vs 537 (floor 3) ○ | ● (test V2-S3) | — |
+| audio2 (FSDD spoken digits) | 762 | 0.111 | 0.870 | 0.480 ○ | 8140 vs 8667 (floor 21) ● | ● (test V2-S3) | — |
+| video2 (Moving-MNIST procedure on MNIST) | 1325 | 0.037 | 0.928 | 0.100 ○ | 8788 vs 8488 (floor 3) ○ | ● (test V2-S3) | — |
 | pc3d2 (ModelNet10 (from ModelNet40-2048)) | 8076 | 0.079 | 0.892 | 0.994 ● | 80 vs 479 (floor 41) ● | ● (test V2-S3) | — |
 
-S5 audio Griffin-Lim round trip (n=32): judge acc 0.938 direct → 0.938 after inversion ●.
+S5 audio Griffin-Lim round trip (n=32): judge acc 0.813 direct → 0.813 after inversion ●.
 
 FID-lite is a Fréchet distance in the 64-d penultimate features of each modality's own judge classifier (n=500). It is only comparable within a modality, and never to Inception FID.
+
+## Plain verdict on the self-trained tier
+- **video2 generation fails.** Judge accuracy of generated clips is 0.100 with or without guidance, which is chance for 10 classes. The model denoises well (held-out ε-MSE 0.037), but it has not learned class-conditional motion in 1325 CPU steps.
+- **image2: guidance makes FID-lite worse** (585 with CFG g=3 vs 537 at g=0; real-vs-real floor 3). CFG raises class accuracy (0.118 → 0.370) at the cost of distribution match. Both are far from the floor.
+- **audio2:** guided samples are recognisable 48% of the time (chance 10%) and FID-lite improves slightly with guidance. This is still far from the floor (21).
+- **pc3d2 is the only self-trained model that passes S1 and S2.**
+- S4 (the JS hypothesis battery on v2 models) was **not run to completion**: it exceeded about 2 h on a contended CPU and was stopped. The metrics above come from the PyTorch judge (n=500) at the end of training.
+- All models were trained for 1 h of wall-clock on a shared 8-core CPU, alongside other jobs. These are honest small-budget results, not the quality ceiling of the architecture.

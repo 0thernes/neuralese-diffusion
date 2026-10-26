@@ -1,10 +1,16 @@
-# Neuralese Diffusion v1.0.0 (prerelease)
+# Neuralese Diffusion v2.0.0 (prerelease)
 
-Tiny (~630k-param) class-conditional diffusion models for **image (MNIST 16×16), music (piano-roll 16×32), video (4-frame 16×16), 3D (64-point clouds)** running fully on-device in pure JS, plus an interpretability lab (x̂0 lens, trajectories, attention, surgery, steering, patching, SAE/probes).
+**Live:** https://0thernes.github.io/neuralese-diffusion/ · **Real tier:** https://0thernes.github.io/neuralese-diffusion/real/
 
-Assets built by CI:
-- `neuralese-diffusion-debug.apk` — Android debug build (unsigned debug key).
-- `NeuraleseDiffusion-simulator.app.zip` — iOS Simulator build.
-- `NeuraleseDiffusion-unsigned.ipa` — unsigned iOS build for sideloading (AltStore / Sideloadly re-sign it with your Apple ID).
+## What's new
+- **Real pretrained tier (in-browser, onnxruntime-web, WebGPU with WASM fallback):** tiny-sd and sd-turbo text-to-image with a TAESD x̂0 preview, attribution, patching, CFG sweep and steering, plus Stable Audio (measured offline; see docs/MODELS.md). Every file is sha256-pinned, and size and latency are measured. Phones get the small tier.
+- **Self-trained v2 tier (~2.5M-param UNets)** on real datasets for image, audio, video and 3D point clouds, with JS↔PyTorch parity tests, held-out FID-lite and judge accuracy.
+- **v2 LAB tab:** node importance, ACDC-lite, loss slice, low-rank attention, quantization, ROME edit + test, CKA, sonification.
+- **Docs:** CLAIMS-v2, MODELS, ROADMAP (100 items with falsifiable tests), plus STACK/GLOSSARY/COURSE/BIBLE updates. CLI: `node tools/nd.mjs`.
 
-Web: https://0thernes.github.io/neuralese-diffusion/ · Results: docs/CLAIMS.md
+## Honest limitations
+- The self-trained models are small and CPU-trained under a 1-hour budget. Image FID-lite with guidance is worse than without it, and video generation is at chance (judge accuracy 0.10). See docs/CLAIMS-v2.md.
+- Hypothesis R4 FAILED (see CLAIMS-v2).
+- The iOS IPA is unsigned unless signing secrets are present. The Android APK is a debug build.
+
+Assets built by CI: Android debug APK, iOS simulator .app zip and an unsigned IPA.

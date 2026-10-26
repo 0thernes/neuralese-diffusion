@@ -47,7 +47,7 @@ I=[
 ('v2','v-prediction variant','planned','compare held-out loss at equal steps'),
 ('v2','DDPM/DDIM both available','done','both samplers produce finite output'),
 ('v2','latent diffusion on self-trained autoencoder','planned','reconstruction PSNR ≥ 25 dB'),
-('v2','classifier-free guidance sweep','done','S4 battery'),
+('v2','classifier-free guidance sweep','partial','S4 battery on v2 models not completed (stopped >2 h); g0 vs g3 measured in train2'),
 ('v2','probe accuracy at t=T/2','done','in meta'),
 ('v2','SAE on bottleneck','done','FVU, L0, dead features in meta'),
 ('v2','UI for all 4 v2 modalities','done','smoke screenshots per modality'),
