@@ -3,6 +3,7 @@ on:
   push: { branches: [main] }
   workflow_dispatch:
 permissions: { contents: write }
+concurrency: { group: ios, cancel-in-progress: true }
 jobs:
   ios:
     runs-on: macos-latest
