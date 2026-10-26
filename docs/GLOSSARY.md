@@ -29,3 +29,12 @@
 - **Steering vector** — a direction added to activations to push the output toward a concept.
 - **Timestep embedding** — sinusoidal features of t fed through an MLP into every ResBlock.
 - **x̂₀ lens** — the model's per-step reconstruction of the clean sample; analogue of the logit lens.
+
+## v2 terms
+- **TAESD** — tiny autoencoder that decodes SD latents ~100× cheaper than the VAE; used for the x̂₀ lens.
+- **FID-lite** — Fréchet distance in a modality's own judge-classifier features; within-modality only.
+- **Griffin-Lim** — iterative phase reconstruction from a magnitude spectrogram.
+- **ACDC-lite** — greedy node-level mean-ablation to find a minimal subgraph that keeps loss within τ.
+- **ROME edit** — minimum-norm rank-k weight change that maps chosen keys to chosen values.
+- **CKA** — centered kernel alignment; similarity of two representation sets, invariant to rotation and scale.
+- **SD-Turbo / adversarial distillation** — 1–4 step sampler trained against a discriminator.

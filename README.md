@@ -14,6 +14,15 @@ Trained by us in PyTorch (`train/`), exported to JSON+base64, and run by a depen
 
 **Live:** https://0thernes.github.io/neuralese-diffusion/ · **Apps:** see Releases (Android APK, iOS simulator .app, unsigned .ipa).
 
+## v2.0.0 — real models + a v12-style lab
+
+- **Real pretrained tier** (`/real/`): tiny-sd (0.55 B) and SD-Turbo (1.3 B) run **in your browser** via onnxruntime-web (WebGPU, WASM fallback). Every file is pinned by Hugging Face commit + sha256 and verified before use. A 4.9 MB TAESD decoder gives a live x̂₀ preview at every step. Tools: token attribution by ablation, prompt patching, CFG sweep, embedding steering. Phones get the small tier (TAESD self-test + self-trained models); the big models need a desktop GPU.
+- **Self-trained v2 tier**: 2.5 M-param UNets on real datasets — Fashion-MNIST, FSDD spoken digits (spectrogram + Griffin-Lim playback), Moving-MNIST video, ModelNet10 point clouds. The JS engine matches PyTorch to ≤ 1e-4.
+- **LAB tab**: node ablation, ACDC-lite circuits, SVD low-rank, int-k quantization, ROME-style cross-attention edit, linear CKA, loss-landscape slice, sonification.
+- **CLI**: `node tools/nd.mjs info | sample image2 --cls 3 | parity pc3d2 | lab image2 acdc`.
+- Results, failures included: [docs/CLAIMS-v2.md](docs/CLAIMS-v2.md) · models and licences: [docs/MODELS.md](docs/MODELS.md) · 100-item roadmap: [docs/ROADMAP.md](docs/ROADMAP.md) · pre-registration: [docs/PREREG-v2.md](docs/PREREG-v2.md).
+- Stable Audio 3 small (q4) runs on the box (5 s clip in about 14 s on CPU) but not yet in the browser, because it needs a JS Gemma tokenizer. No browser-sized ONNX video or 3D generator exists, so those stay self-trained.
+
 ## Lab tabs
 SAMPLE (DDPM/DDIM, steps, guidance, QRNG seed) · LENS (per-step x̂0) · TRAJ3D (PCA trajectories, three.js) · ACT3D (activations/weights) · ATTN (self & cross-attention) · SURGERY (low-rank/zero edits with undo) · STEER (mean-difference vectors) · PATCH (activation patching between seeds) · SCHEDULE (β/ᾱ/SNR plots) · SAE·PROBE · METRICS · DOCS.
 

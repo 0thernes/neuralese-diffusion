@@ -2,7 +2,7 @@
 import { loadModel, T3, argmax, steerHook, patchRun } from '../site/engine.js';
 import { motionDir, gridToPoints, shapeJudge } from '../site/modalities.js';
 import fs from 'node:fs'; import crypto from 'node:crypto';
-const mod = process.argv[2], N = +(process.argv[3] || 40), m = await loadModel(mod), K = m.K, { C, H, W } = m.meta, T = m.T;
+const mod = process.argv[2], N = +(process.argv[3] || 40), v2 = mod.endsWith('2'), m = v2 ? await loadModel(mod.slice(0, -1), new URL('../site/models2/', import.meta.url)) : await loadModel(mod), K = m.K, { C, H, W } = m.meta, T = m.T;
 const judge = (d) => argmax(m.classify(T3(C, H, W, d))), t0 = Date.now();
 const run = (o) => m.sample({ steps: 20, scheduler: 'ddim', guidance: 3, ...o });
 const acc = (f) => { let c = 0; for (let i = 0; i < N; i++) c += f(i) ? 1 : 0; return c / N; };
@@ -23,4 +23,4 @@ R.acc_noCA = acc((i) => judge(run({ seed: 1000 + i, cls: i % K }).x.d) === i % K
 if (mod === 'video') { R.motion_acc = acc((i) => motionDir(base[i].x.d) === i % K); R.H8 = R.motion_acc >= 0.8; }
 if (mod === 'shape3d') { R.chamfer_acc = acc((i) => shapeJudge(gridToPoints(base[i].x.d)) === i % K); R.H9 = R.chamfer_acc >= 0.6; }
 R.ms_per_forward = (Date.now() - t0) / (N * 20 * 2 * (1 + 1 + 3 + 3 + 0.5 + 0.5 + 2.5 + 1)); R.seconds = (Date.now() - t0) / 1000;
-fs.mkdirSync('site/results', { recursive: true }); fs.writeFileSync(`site/results/${mod}.json`, JSON.stringify(R, null, 1)); console.log(JSON.stringify(R));
+const od = v2 ? 'site/results2' : 'site/results', of = v2 ? `eval_${mod}.json` : `${mod}.json`; if (v2) R.model_sha256 = m.meta.sha256; fs.mkdirSync(od, { recursive: true }); fs.writeFileSync(`${od}/${of}`, JSON.stringify(R, null, 1)); console.log(JSON.stringify(R));

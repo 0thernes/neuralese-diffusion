@@ -10,3 +10,10 @@
 8. **Surgery.** SURGERY → `net.ca.o.weight` → zero → "test edited model". Does the class survive without cross-attention? (PREREG H7.) Undo, check parity in METRICS returns ≤ 1e-5.
 9. **Steer & patch.** STEER: unconditional + target 3, α sweep. PATCH: A = 1, B = 7; window sweep. Early or late windows matter more? (H3, H4.)
 10. **Features.** SAE·PROBE. Find a feature that lights up on stroke ends (image) or on the lower octave (music). Write the claim and a test that could refute it.
+
+## v2 labs
+11. REAL tier: run the self-test, then tiny-sd with the lens on. At which step does the TAESD preview stop changing? (Compare with R2.)
+12. Attribution: which prompt token moves ε most? Is it always the noun? (R3.)
+13. Prompt patching: find the smallest k at which the result still looks like A (R4 says it is < 4).
+14. LAB on pc3d2: run ACDC-lite; which nodes survive? Then quantize to 4 bits; how much does the loss move?
+15. audio2: sample a digit, play it through Griffin-Lim, then compare it with S5's round-trip numbers.

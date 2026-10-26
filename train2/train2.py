@@ -13,6 +13,10 @@ def aug(x):
     if mod=='image': return torch.where(torch.rand(len(x),1,1,1)<0.5, x.flip(-1), x)
     return x
 log=[]; t0=time.time(); it=0
+CK=f'/workspace/data/ckpt_{mod}_{int(budget)}.pt'  # checkpoint/resume so an interrupted run loses <=500 iterations
+import os
+if os.path.exists(CK):
+    c=torch.load(CK); net.load_state_dict(c['net']); ema.load_state_dict(c['ema']); opt.load_state_dict(c['opt']); it=c['it']; log=c['log']; t0=time.time()-c['el']; torch.set_rng_state(c['rng']); print('resumed',mod,it,flush=True)
 while True:
     el=time.time()-t0
     if el>budget: break
@@ -26,6 +30,7 @@ while True:
         for pe,pn in zip(ema.parameters(),net.parameters()): pe.mul_(d).add_(pn,alpha=1-d)
     if it%200==0: log.append([it,round(el),float(loss)]); print(mod,it,f'{float(loss):.4f}',f'{el:.0f}s',flush=True)
     it+=1
+    if it%500==0: torch.save(dict(net=net.state_dict(),ema=ema.state_dict(),opt=opt.state_dict(),it=it,log=log,el=time.time()-t0,rng=torch.get_rng_state()),CK)
 train_s=time.time()-t0; steps=it; net=ema
 # fp16 round-trip of the weights so PyTorch reference == what JS loads
 with torch.no_grad():

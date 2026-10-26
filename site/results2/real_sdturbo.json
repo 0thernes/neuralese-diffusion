@@ -1,0 +1,141 @@
+{
+ "load_ms": 11283.522257999999,
+ "seeds": [
+  {
+   "seed": 0,
+   "alpha": [
+    -1,
+    0,
+    1,
+    2
+   ],
+   "rminusb": [
+    -15.404842376708984,
+    2.6565895080566406,
+    36.033748626708984,
+    52.177242279052734
+   ],
+   "ms": [
+    14226,
+    9219,
+    8847,
+    9567
+   ],
+   "monotonic": true
+  },
+  {
+   "seed": 1,
+   "alpha": [
+    -1,
+    0,
+    1,
+    2
+   ],
+   "rminusb": [
+    -16.574485778808594,
+    12.40261459350586,
+    38.6857795715332,
+    61.326934814453125
+   ],
+   "ms": [
+    8892,
+    8662,
+    8816,
+    8814
+   ],
+   "monotonic": true
+  },
+  {
+   "seed": 2,
+   "alpha": [
+    -1,
+    0,
+    1,
+    2
+   ],
+   "rminusb": [
+    -12.4576416015625,
+    12.43911361694336,
+    44.12849807739258,
+    74.75386810302734
+   ],
+   "ms": [
+    8657,
+    8502,
+    8328,
+    10867
+   ],
+   "monotonic": true
+  },
+  {
+   "seed": 3,
+   "alpha": [
+    -1,
+    0,
+    1,
+    2
+   ],
+   "rminusb": [
+    -21.94788360595703,
+    6.323902130126953,
+    31.364994049072266,
+    46.80742645263672
+   ],
+   "ms": [
+    8928,
+    8667,
+    8790,
+    8939
+   ],
+   "monotonic": true
+  }
+ ],
+ "R5": {
+  "monotonic_seeds": 4,
+  "pass": true
+ },
+ "timing": {
+  "text": [
+   831,
+   441,
+   463
+  ],
+  "unet": [
+   6612,
+   3938,
+   3256,
+   3809,
+   3391,
+   3445,
+   3306,
+   3407,
+   3147,
+   3013,
+   3158,
+   4011,
+   3541,
+   3287,
+   3202,
+   3333
+  ],
+  "vae": [
+   7472,
+   5124,
+   5488,
+   5610,
+   5369,
+   5114,
+   5401,
+   5271,
+   5411,
+   5337,
+   5071,
+   6702,
+   5271,
+   5234,
+   5457,
+   5450
+  ]
+ },
+ "note": "sd-turbo (schmuell/sd-turbo-ort-web, fp16 weights, fp32 I/O) on onnxruntime-node 1.23 CPU EP, graphOptimizationLevel=basic (\"all\" crashes in SimplifiedLayerNormFusion on this export). 1 step, t=999, no CFG. End-to-end ms = text-free (embedding precomputed) unet + VAE decode; measured while training jobs shared the CPU."
+}

@@ -22,3 +22,9 @@ above "tiny"), Point-E, AudioLDM, video latent diffusion, Eshkol / Moonlab / QGT
 | music | procedural (`train/data.py`, seed 0): 4 pattern classes on a 2-octave C-major piano roll | generated here, MIT |
 | video | procedural 4-frame moving 4×4 blob, 4 directions | generated here, MIT |
 | 3D | procedural 64-point clouds (sphere, cube surface, torus, cone), random z-rotation and scale | generated here, MIT |
+
+## v2 additions
+- onnxruntime-web 1.23.0 (WebGPU + WASM, loaded from jsDelivr, sha-pinned) · onnxruntime-node 1.23 (box measurements)
+- Models: tiny-sd fp16 ONNX (CreativeML OpenRAIL-M), SD-Turbo ONNX (Stability Non-Commercial Research Community), TAESD ONNX (MIT), Stable Audio 3 small music q4 ONNX (Stability Community + Gemma terms; box only)
+- Datasets: Fashion-MNIST (MIT), Free Spoken Digit Dataset (CC BY-SA 4.0), MNIST (CC BY-SA 3.0) for Moving-MNIST, ModelNet40-2048 / ModelNet10 (academic use)
+- PyTorch 2.x CPU (training), scipy (FID-lite sqrtm), puppeteer (smoke screenshots)

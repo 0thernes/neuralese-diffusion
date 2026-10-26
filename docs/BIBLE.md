@@ -50,3 +50,9 @@ also an unconditional model → classifier-free guidance).
 
 ## 6. Verification
 Every claim is backed by a test (`npm test`) or by the pre-registered eval (`node tools/eval.mjs <modality>`). See CLAIMS.md.
+
+## 7. v2: real pretrained models in the browser
+tiny-sd / SD-Turbo are latent diffusion models: CLIP text encoder → 77×768 (or 1024) context; UNet predicts ε on a 4×64×64 latent; DDIM (tiny-sd, leading spacing) or 1-step Euler at t=999 (SD-Turbo); VAE decoder (latent/0.18215) → 512² RGB. The x̂₀ lens is (x_t − √(1−ᾱ)ε̂)/√ᾱ, decoded by TAESD, which takes the scaled latent directly. Attribution replaces one token row with the padding embedding and measures the step-1 ε change. Patching swaps the conditioning after step k. Steering adds α·(E(a)−E(b)) to every token row. All files are verified by sha256 before ORT sees them.
+
+## 8. v2: the LAB tools
+The metric throughout is held-out denoising ε-MSE at t ∈ {20,60,100,140,180}. Node importance mean-ablates one of 8 nodes (d1 d2 m1 sa ca m2 u2 u1). ACDC-lite removes nodes greedily while the loss rise is < τ. Low-rank uses one-sided Jacobi SVD. Quantization is symmetric per-tensor int-k. ROME solves W' = W + (V−WK)(KᵀK)⁻¹Kᵀ on the class context tokens. CKA is linear CKA on spatially pooled activations. Every edit goes through model.edit and is undone bit-exactly.
