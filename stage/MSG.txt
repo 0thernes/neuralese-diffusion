@@ -1,1 +1,1 @@
-v2 results: self-trained models2 (run1), R5/R7/R8 results, S5, CLAIMS-v2, MODELS, docs, CLI/eval updates
+v2.0.0: retrained self-trained models (run 2), honest CLAIMS-v2/MODELS verdicts, ROADMAP, smoke2, version 2.0.0, release notes
