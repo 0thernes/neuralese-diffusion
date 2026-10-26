@@ -26,8 +26,8 @@ jobs:
         with: { name: neuralese-diffusion-android-debug-apk, path: neuralese-diffusion-debug.apk }
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0
-          name: Neuralese Diffusion v1.0.0
+          tag_name: v2.0.0
+          name: Neuralese Diffusion v2.0.0
           target_commitish: ${{ github.sha }}
           prerelease: true
           body_path: RELEASE_NOTES.md
