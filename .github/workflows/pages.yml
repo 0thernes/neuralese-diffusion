@@ -5,7 +5,9 @@ on:
     paths: ['site/**', 'tools/binaries.json', 'test/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions: { contents: write }
-concurrency: { group: ${{ github.workflow }}-${{ github.ref }}, cancel-in-progress: true }
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-24.04
