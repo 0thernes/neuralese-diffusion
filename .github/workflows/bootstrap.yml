@@ -1,0 +1,17 @@
+name: bootstrap
+on:
+  push:
+    branches: [main]
+    paths: ['bootstrap/**']
+permissions: { contents: write }
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          base64 -d bootstrap/bundle.tgz.b64 | tar xzf -
+          git rm -rq bootstrap tmp/probe.txt .github/workflows/bootstrap.yml || true
+          rm -rf bootstrap
+          git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
+          git add -A && git commit -qm 'Neuralese Diffusion source (unpacked from bootstrap bundle)' && git push
