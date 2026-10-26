@@ -6,3 +6,5 @@
 - 07:10 app.js (12 tabs), linalg.js, modalities.js, PWA, Capacitor android+ios, workflows android.yml / ios.yml; repo created.
 - 07:15 SAE retrained (train/sae.py, λ=1.0) for image/video/shape3d; evals running (tools/eval.mjs, N=40).
 - 07:30 shape3d+image evals done; README, RELEASE_NOTES, CLAIMS (generated), pages.yml; restore-binaries step in all workflows; gh-pages live placeholder. Pushing code to main.
+- 07:36 Source on main via Actions-unpacked bundle (connector caps $file args at 4/call); workflows pushed (abc29ee) → pages/android/ios running.
+- 07:42 CI fix: node 22 needs test glob; concurrency groups. image/video evals in; CLAIMS regenerated.
