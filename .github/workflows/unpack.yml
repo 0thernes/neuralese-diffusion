@@ -18,10 +18,11 @@ jobs:
       - run: |
           cd main
           test -f ../stage/stage/SHA.txt || exit 0
-          cat ../stage/parts/ship.part.* > /tmp/s.b64
+          cat ../stage/parts3/s3.part.* > /tmp/s.b64
           [ "$(sha256sum /tmp/s.b64 | cut -d' ' -f1)" = "$(cat ../stage/stage/SHA.txt)" ] || { echo 'incomplete bundle, skipping'; exit 0; }
           base64 -d /tmp/s.b64 | tar xz
           git config user.name "Alex Donahue (via Grok Bot)"; git config user.email "0thernes@users.noreply.github.com"
           git add -A && git commit -F ../stage/stage/MSG.txt && git push origin main
           gh workflow run pages.yml --ref main
+          if [ -f ../stage/stage/TAG ]; then T=$(cat ../stage/stage/TAG); git tag "$T" && git push origin "$T"; sleep 5; gh workflow run android.yml --ref "$T"; gh workflow run ios.yml --ref "$T"; fi
         env: { GH_TOKEN: "${{ github.token }}" }
