@@ -1,0 +1,1 @@
+v2 web increment: real pretrained tier (tiny-sd/sd-turbo via onnxruntime-web, TAESD x0 lens, attribution, patching, CFG sweep, steering), v2 LAB tab, modalities2, CLI, ROADMAP
