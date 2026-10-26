@@ -1,0 +1,31 @@
+# GLOSSARY
+- **ᾱ_t (alpha-bar)** — cumulative product of (1−β); fraction of signal variance left at step t.
+- **β_t (beta)** — per-step noise variance of the forward process.
+- **Activation patching** — replacing an internal activation in one run with the value from another run to test causal role.
+- **Bottleneck / mid** — the lowest-resolution feature map (64 ch) after self- and cross-attention; target of steering and patching.
+- **CFG (classifier-free guidance)** — ε̂ = ε̂(∅) + g(ε̂(y) − ε̂(∅)); trades diversity for adherence to the condition.
+- **Chamfer distance** — symmetric mean squared nearest-neighbour distance between two point sets.
+- **Context tokens** — 4 learned 64-d vectors per class read by cross-attention; stand-in for text tokens.
+- **Cross-attention** — attention whose queries come from the image features and keys/values from the context tokens.
+- **DDIM** — deterministic sampler (η = 0) that can skip timesteps.
+- **DDPM** — the original stochastic ancestral sampler.
+- **Eckart–Young** — truncated SVD is the best rank-k approximation in Frobenius norm; used by the low-rank surgery.
+- **ε-prediction** — the network predicts the noise that was added rather than x₀.
+- **FVU** — fraction of variance unexplained by an SAE reconstruction.
+- **GroupNorm** — normalisation over groups of channels (8 groups here).
+- **Judge** — the small CNN classifier shipped with each model, trained on clean data only.
+- **L0** — average number of non-zero SAE features per input.
+- **Linear probe** — a linear classifier trained on frozen activations.
+- **Mulberry32** — the 32-bit PRNG used for sampling noise, seeded by the user or QRNG.
+- **Null class ∅** — label index K meaning "no condition" (used 10 % of training time).
+- **PCA** — principal component analysis; used to show trajectories in 3D.
+- **Piano roll** — pitch × time grid of note on/off.
+- **Pre-registration** — fixing hypotheses and thresholds before seeing results (docs/PREREG.md, hashed).
+- **QRNG** — Tsotchke quantum_rng: a classical simulator of quantum measurement, WASM build; not hardware randomness.
+- **SAE** — sparse autoencoder; decomposes activations into (hopefully) interpretable features.
+- **Schedule** — the sequence β_1..β_T and the subset of timesteps a sampler visits.
+- **Self-attention** — attention among bottleneck positions.
+- **SNR** — signal-to-noise ratio ᾱ/(1−ᾱ).
+- **Steering vector** — a direction added to activations to push the output toward a concept.
+- **Timestep embedding** — sinusoidal features of t fed through an MLP into every ResBlock.
+- **x̂₀ lens** — the model's per-step reconstruction of the clean sample; analogue of the logit lens.

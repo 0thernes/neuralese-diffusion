@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NEURALESE DIFFUSION — tiny diffusion interpretability lab</title>
+<meta name="description" content="On-device interpretability lab for tiny diffusion models: image, music, video, 3D.">
+<meta name="theme-color" content="#05070d"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head><body>
+<header id="top"><div class="logo">NEURALESE<span>·DIFFUSION</span><i>v1</i></div>
+<select id="mod" aria-label="modality"><option value="image">image · MNIST 16²</option><option value="music">music · piano-roll</option><option value="video">video · 4 frames</option><option value="shape3d">3D · point cloud</option></select>
+<div id="hud"></div></header>
+<nav id="tabs"></nav>
+<main id="main"><div id="status">loading…</div></main>
+<script type="module" src="app.js"></script>
+</body></html>

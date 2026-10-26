@@ -1,0 +1,5 @@
+// Offline cache (PWA). Cache-first for the app shell + models; bump VERSION on deploy.
+const VERSION = 'nd-v1.0.0', FILES = ['./', 'index.html', 'style.css', 'app.js', 'engine.js', 'linalg.js', 'modalities.js', 'manifest.webmanifest', 'icons/icon-192.png', 'vendor/three/three.module.min.js', 'vendor/three/addons/controls/OrbitControls.js', 'tsotchke/qrng.js', 'tsotchke/qrng.mjs', 'tsotchke/qrng.wasm.b64', 'tsotchke/nist.js', 'tsotchke/wasmb64.js', ...['image', 'music', 'video', 'shape3d'].flatMap((m) => [`models/${m}.json`, `models/${m}.0.b64`, `models/${m}.1.b64`]), 'results/summary.json'];
+self.addEventListener('install', (e) => e.waitUntil(caches.open(VERSION).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())));
+self.addEventListener('activate', (e) => e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim())));
+self.addEventListener('fetch', (e) => { if (e.request.method !== 'GET') return; e.respondWith(caches.match(e.request, { ignoreSearch: true }).then((r) => r || fetch(e.request))); });

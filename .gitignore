@@ -1,0 +1,14 @@
+node_modules/
+.venv/
+android/app/build/
+android/build/
+android/.gradle/
+ios/App/Pods/
+ios/App/build/
+build/
+train/__pycache__/
+train/log_*.txt
+*.apk
+android/local.properties
+results_*.log
+site/models/*.b64.full
