@@ -1,17 +1,17 @@
 name: ios
 on:
-  push: { branches: [main] }
   workflow_dispatch:
+  push: { tags: ['v*'] }
 permissions: { contents: write }
-concurrency: { group: ios, cancel-in-progress: true }
+concurrency: { group: ${{ github.workflow }}-${{ github.ref }}, cancel-in-progress: true }
 jobs:
   ios:
     runs-on: macos-latest
     env:
       HAS_SIGNING: ${{ secrets.IOS_P12_BASE64 != '' && secrets.IOS_PROVISION_PROFILE_BASE64 != '' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - run: node tools/restore-binaries.mjs
       - run: npm ci
@@ -43,7 +43,7 @@ jobs:
           xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive DEVELOPMENT_TEAM="$TEAM" archive
           printf '<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>method</key><string>development</string><key>teamID</key><string>%s</string></dict></plist>' "$TEAM" > eo.plist
           xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist eo.plist -exportPath build/signed && cp build/signed/*.ipa NeuraleseDiffusion-signed.ipa
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: neuralese-diffusion-ios
           path: |
