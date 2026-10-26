@@ -8,3 +8,6 @@
 - 07:30 shape3d+image evals done; README, RELEASE_NOTES, CLAIMS (generated), pages.yml; restore-binaries step in all workflows; gh-pages live placeholder. Pushing code to main.
 - 07:36 Source on main via Actions-unpacked bundle (connector caps $file args at 4/call); workflows pushed (abc29ee) → pages/android/ios running.
 - 07:42 CI fix: node 22 needs test glob; concurrency groups. image/video evals in; CLAIMS regenerated.
+- 07:50 Per parent: mobile workflows dispatch/tag-only, pages path-filtered, per-ref concurrency, Node24 actions; iOS+pages green on 7957e39; android setup-android removed; dispatched android+ios once.
+- 07:58 All CI green; release v1.0.0 has APK, sim .app.zip, unsigned .ipa. Live smoke all 4 modalities OK (24 shots). Music eval still running.
+- 08:13 Music eval done; summary + CLAIMS regenerated; fixed ATTN/SAE grid label for non-square bottleneck (music 4×8).
