@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NEURALESE DIFFUSION — real pretrained tier</title>
+<meta name="theme-color" content="#05070d"><link rel="icon" href="../icons/icon-192.png"><link rel="stylesheet" href="../style.css">
+</head><body>
+<header id="top"><div class="logo">NEURALESE<span>·DIFFUSION</span><i>v2 · real tier</i></div><a href="../">← self-trained lab</a><div id="hud"></div></header>
+<main id="main">
+<div class="card"><h3>REAL PRETRAINED DIFFUSION, IN YOUR BROWSER</h3>
+<p class="muted">Real Stable-Diffusion-family models (ONNX) run by onnxruntime-web on WebGPU (WASM fallback). Every file is pinned to a Hugging Face commit and SHA-256-checked before use; the runtime itself is fetched from jsDelivr at a pinned version, hash-checked, and imported from a blob URL. Nothing leaves your device. Measured box-CPU numbers are in <a href="../results2/">results2/</a>; browser numbers are only what this page measures on your machine.</p>
+<div id="dev" class="row"></div><div class="row"><button id="selftest">self-test: runtime + TAESD (30 MB, phone ok)</button><span id="st" class="muted"></span></div>
+<table id="mt"><tr><th>model</th><th>params</th><th>download</th><th>tier</th><th>license</th><th></th></tr></table></div>
+<div class="card" id="ctl" hidden><h3>GENERATE</h3>
+<div class="row"><label>prompt</label><input id="prompt" size="50" value="a red apple on a wooden table"></div>
+<div class="row"><label>negative</label><input id="neg" size="30" value=""><label>steps</label><input id="steps" type="number" min="1" max="50" value="20" style="width:60px"><label>CFG</label><input id="cfg" type="number" step="0.5" value="7.5" style="width:60px"><label>seed</label><input id="seed" type="number" value="0" style="width:70px"></div>
+<div class="row"><label>prompt swap → </label><input id="swapP" size="30" placeholder="(optional) prompt B"><label>after step k</label><input id="swapK" type="number" value="4" style="width:50px"></div>
+<div class="row"><label>steer +</label><input id="stP" value="red" size="8"><label>−</label><input id="stM" value="blue" size="8"><label>α</label><input id="stA" type="number" step="0.5" value="0" style="width:60px"></div>
+<div class="row"><button class="pri" id="go">generate (x̂0 lens via TAESD each step)</button><button id="attr">token attribution (step-1 ablation)</button><button id="sweep">CFG sweep 1 / 3 / 7.5 / 12</button></div>
+<div id="prog" class="muted"></div><div class="strip" id="lens"></div><div class="row" id="out"></div><div id="extra"></div></div>
+<div class="card"><h3>WHAT THE HOOKS ARE (honest)</h3><ul class="muted">
+<li><b>x̂0 lens</b> — at every step the DDIM estimate x̂0 = (x_t − √(1−ᾱ)ε̂)/√ᾱ is decoded with TAESD (1.2M-param tiny autoencoder). This is the diffusion analogue of the logit lens.</li>
+<li><b>Token attribution</b> — causal, not attention: each prompt token's text-encoder output is replaced by the padding-position embedding and the change in step-1 x̂0 is measured (scalar + 64×64 spatial map). The ONNX graphs do not expose cross-attention probabilities, so we do not draw attention maps.</li>
+<li><b>Prompt swap</b> — conditioning patching: prompt A for the first k steps, B afterwards (prompt-to-prompt-style, without attention injection).</li>
+<li><b>Steering</b> — adds α·(mean E(+) − mean E(−)) to every text-encoder position.</li>
+<li><b>CFG sweep</b> — same seed, guidance 1 / 3 / 7.5 / 12.</li></ul></div>
+</main><script type="module" src="real.js?v=2"></script></body></html>

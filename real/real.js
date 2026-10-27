@@ -1,0 +1,36 @@
+import { PIPES, TAESD, ORT, totalBytes } from './models.js?v=2';
+const $ = (s) => document.querySelector(s), mb = (b) => (b / 1e6).toFixed(0) + ' MB';
+const W = new Worker(new URL('./worker.js?v=2', import.meta.url), { type: 'module' }); let nid = 0; const pend = {};
+W.onmessage = ({ data }) => pend[data.id]?.(data);
+const call = (msg, on) => new Promise((res, rej) => { const id = ++nid; pend[id] = (d) => { if (d.error) { delete pend[id]; rej(new Error(d.error)); } else if (d.done || d.stage === 'ready') { delete pend[id]; res(d); } else on?.(d); }; W.postMessage({ id, ...msg }); });
+const canv = (rgba, s = 512, show = 256) => { const c = document.createElement('canvas'); c.width = s; c.height = s; c.getContext('2d').putImageData(new ImageData(rgba, s, s), 0, 0); c.style.width = show + 'px'; c.style.imageRendering = 'auto'; return c; };
+const fig = (c, cap) => { const f = document.createElement('figure'); f.append(c, Object.assign(document.createElement('figcaption'), { textContent: cap })); return f; };
+window.NDR = { results: [] };
+(async () => { const gpu = 'gpu' in navigator ? await navigator.gpu.requestAdapter().catch(() => null) : null, mem = navigator.deviceMemory, mobile = /Android|iPhone|iPad/.test(navigator.userAgent);
+  const f16 = !!gpu?.features?.has?.('shader-f16'); NDR.device = { webgpu: !!gpu, f16, mem, mobile }; $('#dev').innerHTML = `device: WebGPU <b class="${gpu ? 'ok' : 'warn'}">${gpu ? 'yes' : 'no (WASM fallback, very slow)'}</b>${gpu ? ` · shader-f16 <b class="${f16 ? 'ok' : 'warn'}">${f16 ? 'yes' : 'no'}</b>` : ''} · deviceMemory ${mem ?? '?'} GB · ${mobile ? '<b class="warn">phone/tablet: real models hidden by default (≥1 GB downloads); the self-trained lab is the phone tier</b>' : 'desktop'} · runtime onnxruntime-web ${ORT.version}`;
+  for (const p of PIPES) { const tr = document.createElement('tr'), b = document.createElement('button'); b.textContent = 'load'; b.className = 'pri';
+    tr.innerHTML = `<td>${p.name}<br><span class="muted">${p.repo}</span></td><td>${p.params}</td><td><b class="warn">${mb(totalBytes(p))}</b></td><td><span class="warn">desktop · WebGPU</span></td><td class="muted">${p.license}</td>`;
+    const td = document.createElement('td'); td.append(b); tr.append(td); $('#mt').append(tr); if (mobile && !location.hash.includes('force')) b.disabled = true;
+    b.onclick = async () => { if (!confirm(`Download ${mb(totalBytes(p))} (cached after first load) and run ${p.name}? Needs a desktop GPU with WebGPU; may run out of memory elsewhere.`)) return;
+      document.querySelectorAll('#mt button').forEach((x) => (x.disabled = true)); const t0 = performance.now();
+      try { const r = await call({ op: 'load', key: p.key, ep: location.hash.includes('wasm') ? 'wasm' : undefined }, (d) => ($('#prog').textContent = `${d.stage} ${(100 * d.progress).toFixed(0)}%${d.fromCache ? ' (cache)' : ''}`));
+        NDR.loaded = { key: p.key, ep: r.ep, load_ms: performance.now() - t0 }; $('#hud').innerHTML = `<b>${p.key}</b> on <b>${r.ep}</b> · loaded in ${((performance.now() - t0) / 1000).toFixed(1)} s`; $('#prog').textContent = '';
+        $('#ctl').hidden = false; $('#steps').value = p.cfg.steps; $('#cfg').value = p.cfg.guidance; } catch (e) { $('#prog').innerHTML = `<span class="bad">${e.message}</span>`; document.querySelectorAll('#mt button').forEach((x) => (x.disabled = false)); } }; }
+  const tt = document.createElement('tr'); tt.innerHTML = `<td>${TAESD.name}</td><td>${TAESD.params}</td><td>${mb(TAESD.file.bytes)}</td><td class="ok">phone ok</td><td class="muted">${TAESD.license}</td><td class="muted">auto (x̂0 lens)</td>`; $('#mt').append(tt); })();
+const args = () => ({ prompt: $('#prompt').value, negative: $('#neg').value, steps: +$('#steps').value, guidance: +$('#cfg').value, seed: +$('#seed').value,
+  swap: $('#swapP').value ? { prompt: $('#swapP').value, k: +$('#swapK').value } : null, steer: { plus: $('#stP').value, minus: $('#stM').value, alpha: +$('#stA').value } });
+$('#go').onclick = async () => { $('#lens').innerHTML = ''; $('#out').innerHTML = ''; const a = args();
+  const r = await call({ op: 'gen', preview: true, ...a }, (d) => { if (d.preview) { $('#lens').append(fig(canv(d.preview, 512, 96), `x̂0 @ step ${d.step} (t=${d.t})`)); $('#prog').textContent = `step ${d.step + 1}/${a.steps}`; } }).catch((e) => ({ error: e.message }));
+  if (r.error) return ($('#prog').innerHTML = `<span class="bad">${r.error}</span>`);
+  $('#out').append(fig(canv(r.image), `final (full VAE) · ${(r.ms / 1000).toFixed(1)} s`)); $('#prog').textContent = `tokens: ${r.tokens.join(' · ')} · last unet ${r.timing.unet?.toFixed(0)} ms`; NDR.results.push({ op: 'gen', ms: r.ms, timing: r.timing, ...a }); };
+$('#attr').onclick = async () => { $('#extra').innerHTML = ''; const a = args(); const r = await call({ op: 'attribute', ...a }, (d) => ($('#prog').textContent = `ablating token ${d.i}/${d.of}`)).catch((e) => ({ error: e.message })); if (r.error) return ($('#prog').innerHTML = `<span class="bad">${r.error}</span>`);
+  const mx = Math.max(...r.tokens.map((t) => t.mse)), box = document.createElement('div'); box.className = 'strip';
+  for (const t of r.tokens) { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'), im = g.createImageData(64, 64); let m = 1e-12; for (const v of t.map) m = Math.max(m, v);
+    for (let i = 0; i < 4096; i++) { const v = Math.sqrt(t.map[i] / m) * 255; im.data.set([v * 0.37, v * 0.92, v * 0.83, 255], i * 4); } g.putImageData(im, 0, 0); c.style.width = '96px'; box.append(fig(c, `${t.token} · ${(t.mse / mx).toFixed(2)}`)); }
+  $('#extra').append(Object.assign(document.createElement('p'), { className: 'muted', textContent: 'Per-token causal effect on step-1 x̂0 (normalised to the max token); maps show where the latent changed.' }), box); $('#prog').textContent = `${(r.ms / 1000).toFixed(1)} s`; NDR.results.push({ op: 'attr', ms: r.ms, tokens: r.tokens.map((t) => [t.token, t.mse]) }); };
+$('#sweep').onclick = async () => { $('#extra').innerHTML = ''; const box = document.createElement('div'); box.className = 'strip'; $('#extra').append(box);
+  for (const g of [1, 3, 7.5, 12]) { const r = await call({ op: 'gen', ...args(), guidance: g }).catch((e) => ({ error: e.message })); if (r.error) return ($('#prog').innerHTML = `<span class="bad">${r.error}</span>`); box.append(fig(canv(r.image, 512, 160), `CFG ${g} · ${(r.ms / 1000).toFixed(1)} s`)); } };
+$('#selftest').onclick = async () => { $('#st').textContent = 'running…'; const ref = await (await fetch('../results2/taesd_ref.json')).json();
+  const r = await call({ op: 'taesdtest', ep: location.hash.includes('wasm') ? 'wasm' : undefined }, (d) => ($('#st').textContent = `${d.stage} ${(100 * d.progress).toFixed(0)}%`)).catch((e) => ({ error: e.message }));
+  if (r.error) return ($('#st').innerHTML = `<span class="bad">${r.error}</span>`); const err = Math.max(...r.out.map((v, i) => Math.abs(v - ref.out[i])), Math.abs(r.mean - ref.mean));
+  NDR.selftest = { ep: r.ep, load_ms: r.load_ms, decode_ms: r.decode_ms, maxerr_vs_box: err }; $('#st').innerHTML = `${r.ep}: TAESD load ${r.load_ms.toFixed(0)} ms · decode ${r.decode_ms.toFixed(0)} ms · max |Δ| vs box reference <b class="${err < 2e-2 ? 'ok' : 'bad'}">${err.toExponential(2)}</b>`; $('#st').append(canv(r.image, 512, 64)); };

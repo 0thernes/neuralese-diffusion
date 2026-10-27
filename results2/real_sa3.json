@@ -1,0 +1,86 @@
+{
+ "load_ms": 5367,
+ "seconds": 5,
+ "steps": 8,
+ "t_lat": 120,
+ "schedule": [
+  1,
+  0.9943755959354477,
+  0.9844802434215911,
+  0.9579122720843811,
+  0.8909031788043871,
+  0.7455466141264027,
+  0.5124973964842103,
+  0.27388501873922083,
+  0
+ ],
+ "runs": [
+  {
+   "prompt": "upbeat electronic dance music with a driving bassline",
+   "seed": 0,
+   "file": "out/sa3_upbeat_0.wav",
+   "text_ms": 761.3485849999997,
+   "dit_ms": [
+    1313,
+    1458,
+    1264,
+    1429,
+    1314,
+    1319,
+    1483,
+    1236
+   ],
+   "decoder_ms": 2246,
+   "total_ms": 13872,
+   "rms": 0.2213344432905223
+  },
+  {
+   "prompt": "slow solo piano ballad, gentle and melancholic",
+   "seed": 0,
+   "file": "out/sa3_slow_0.wav",
+   "text_ms": 433.06540099999984,
+   "dit_ms": [
+    1329,
+    1439,
+    1305,
+    1239,
+    937,
+    1055,
+    1642,
+    1662
+   ],
+   "decoder_ms": 1819,
+   "total_ms": 12905,
+   "rms": 0.06070956400671349
+  },
+  {
+   "prompt": "upbeat electronic dance music with a driving bassline",
+   "seed": 1,
+   "file": "out/sa3_upbeat_1.wav",
+   "text_ms": 772.9309850000027,
+   "dit_ms": [
+    1807,
+    1428,
+    1723,
+    1486,
+    1330,
+    1399,
+    1490,
+    1238
+   ],
+   "decoder_ms": 1500,
+   "total_ms": 14200,
+   "rms": 0.18680489252770294
+  }
+ ],
+ "note": "box CPU, onnxruntime-node 1.23, int4 MatMulNBits graphs; tokenizer ids from HF tokenizers (Gemma tokenizer.json) with <bos>=2 prepended; cross-attn = [256 text tokens, duration embedding]. Run while other jobs shared the CPU.",
+ "R8": {
+  "prompt_distance": 5.0517425537109375,
+  "seed_distance": 0.7957451343536377,
+  "feature": "RMS diff of time-averaged 64-band log-mel (44.1 kHz, n_fft 2048)",
+  "max_total_ms": 14200,
+  "min_rms": 0.06070956400671349,
+  "pass": true,
+  "ratio": 6.348442906678068
+ }
+}
