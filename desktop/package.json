@@ -15,7 +15,7 @@
     "dist:linux": "node prep.cjs && electron-builder --linux AppImage deb --x64 --publish never"
   },
   "devDependencies": {
-    "electron": "^38.0.0",
+    "electron": "^42.11.16",
     "electron-builder": "^26.0.0"
   },
   "build": {
