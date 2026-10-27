@@ -10,9 +10,9 @@ jobs:
   apk:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with: { node-version: 22 }
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with: { node-version: 24 }
       - uses: actions/setup-java@v5
         with: { distribution: temurin, java-version: 21 }
       - run: node tools/restore-binaries.mjs
@@ -22,12 +22,12 @@ jobs:
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
       - run: cp android/app/build/outputs/apk/debug/app-debug.apk neuralese-diffusion-debug.apk && sha256sum neuralese-diffusion-debug.apk
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with: { name: neuralese-diffusion-android-debug-apk, path: neuralese-diffusion-debug.apk }
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
-          tag_name: v2.0.0
-          name: Neuralese Diffusion v2.0.0
+          tag_name: v3.0.0
+          name: Neuralese Diffusion v3.0.0
           target_commitish: ${{ github.sha }}
           prerelease: true
           body_path: RELEASE_NOTES.md

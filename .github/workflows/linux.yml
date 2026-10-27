@@ -1,0 +1,38 @@
+name: linux
+on:
+  workflow_dispatch:
+  push: { tags: ['v*'] }
+permissions: { contents: write }
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  desktop:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with: { node-version: 24 }
+      - run: node tools/restore-binaries.mjs
+      - run: npm ci
+      - run: npm test
+      - run: cd desktop && npm ci && npm run dist:linux
+      - name: smoke-test the packaged app (Xvfb)
+        run: xvfb-run -a node desktop/smoke.cjs desktop/dist/linux-unpacked/neuralese-diffusion
+      - run: cd desktop/dist && ls -la && sha256sum *.AppImage *.deb
+      - uses: actions/upload-artifact@v6
+        with:
+          name: neuralese-diffusion-linux
+          path: |
+            desktop/dist/*.AppImage
+            desktop/dist/*.deb
+      - uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v3.0.0
+          name: Neuralese Diffusion v3.0.0
+          target_commitish: ${{ github.sha }}
+          prerelease: true
+          body_path: RELEASE_NOTES.md
+          files: |
+            desktop/dist/NeuraleseDiffusion-3.0.0-x86_64.AppImage
+            desktop/dist/NeuraleseDiffusion-3.0.0-amd64.deb

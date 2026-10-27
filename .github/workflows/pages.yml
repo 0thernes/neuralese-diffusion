@@ -1,8 +1,5 @@
 name: pages
 on:
-  push:
-    branches: [main]
-    paths: ['site/**', 'tools/binaries.json', 'test/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions: { contents: write }
 concurrency:
@@ -12,10 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: node tools/restore-binaries.mjs
-      - uses: actions/setup-node@v5
-        with: { node-version: 22 }
+      - uses: actions/setup-node@v6
+        with: { node-version: 24 }
       - run: npm ci && npm test
       - run: touch site/.nojekyll
       - uses: peaceiris/actions-gh-pages@v4
