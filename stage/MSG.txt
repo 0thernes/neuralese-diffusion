@@ -1,6 +1,4 @@
-v3.0.0: Linux desktop app (Electron AppImage + deb), LAB analyses in a Web Worker, version 3.0.0
+v3.0.1: Electron 42 (Dependabot #1) + software-WebGL fallback, version 3.0.1
 
-- desktop/: Electron wrapper (app:// scheme) bundling site/ incl. self-trained models; /real/ tier downloads ONNX at runtime with existing SHA-256 pins
-- site/lab-worker.js: node importance, ACDC-lite, loss slice off the main thread (fixes v2 page freeze)
-- version 3.0.0 (package.json, Android, iOS, README, RELEASE_NOTES, ROADMAP); sw cache nd-v3.0.0
-- tools/smoke2.mjs, tools/labw-check.mjs, PROGRESS entries
+- desktop/main.cjs: enable-unsafe-swiftshader (Electron 42 dropped the automatic WebGL fallback; GPU-less machines failed with 'Error creating WebGL context')
+- version 3.0.1 (package.json, desktop, Android versionCode 4, iOS 3.0.1/4), RELEASE_NOTES, README, PROGRESS
