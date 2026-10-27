@@ -28,11 +28,11 @@ jobs:
             desktop/dist/*.deb
       - uses: softprops/action-gh-release@v3
         with:
-          tag_name: v3.0.0
-          name: Neuralese Diffusion v3.0.0
+          tag_name: ${{ github.ref_name }}
+          name: Neuralese Diffusion ${{ github.ref_name }}
           target_commitish: ${{ github.sha }}
           prerelease: true
           body_path: RELEASE_NOTES.md
           files: |
-            desktop/dist/NeuraleseDiffusion-3.0.0-x86_64.AppImage
-            desktop/dist/NeuraleseDiffusion-3.0.0-amd64.deb
+            desktop/dist/*.AppImage
+            desktop/dist/*.deb
