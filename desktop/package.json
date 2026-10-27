@@ -1,7 +1,7 @@
 {
   "name": "neuralese-diffusion-desktop",
   "productName": "Neuralese Diffusion",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Neuralese Diffusion desktop app: on-device interpretability lab for tiny diffusion models",
   "homepage": "https://github.com/0thernes/neuralese-diffusion",
   "author": {

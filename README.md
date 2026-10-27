@@ -14,9 +14,9 @@ Trained by us in PyTorch (`train/`), exported to JSON+base64, and run by a depen
 
 **Live:** https://0thernes.github.io/neuralese-diffusion/ · **Apps:** see Releases (Linux AppImage + .deb, Android APK, iOS simulator .app, unsigned .ipa).
 
-## v3.0.0 — Linux desktop app
+## v3.0.x — Linux desktop app (3.0.1: Electron 42)
 
-- **Linux desktop (x64):** Electron wrapper in `desktop/` → `NeuraleseDiffusion-3.0.0-x86_64.AppImage` and `NeuraleseDiffusion-3.0.0-amd64.deb`. The whole web app and every self-trained model ship inside the package and work offline. The `/real/` pretrained ONNX tier downloads its models from Hugging Face at runtime, using the same SHA-256 pinning as the web build. Build it yourself: `cd desktop && npm ci && npm run dist:linux`.
+- **Linux desktop (x64):** Electron wrapper in `desktop/` → `NeuraleseDiffusion-3.0.1-x86_64.AppImage` and `NeuraleseDiffusion-3.0.1-amd64.deb`. The whole web app and every self-trained model ship inside the package and work offline. The `/real/` pretrained ONNX tier downloads its models from Hugging Face at runtime, using the same SHA-256 pinning as the web build. Build it yourself: `cd desktop && npm ci && npm run dist:linux`.
 - **LAB runs off the main thread:** node importance, ACDC-lite and loss slice now run in a module Web Worker (`site/lab-worker.js`) on a copy of the current weights, surgery edits included. In v2 they froze the page for minutes.
 - Service-worker cache bumped to `nd-v3.0.0`, so old installs pick up the new code.
 

@@ -1,15 +1,21 @@
-# Neuralese Diffusion v3.0.0 (prerelease)
+# Neuralese Diffusion v3.0.1 (prerelease)
+
+## 3.0.1
+- Electron 38 → 42.11.16 (Dependabot security update, PR #1).
+- Electron 42 no longer falls back to software WebGL by itself, so on machines without a usable GPU the app failed with "Error creating WebGL context". `desktop/main.cjs` now enables the SwiftShader fallback.
+- Linux file names now say 3.0.1. Android versionCode is 4, and iOS is 3.0.1 (4).
+
 
 **Live:** https://0thernes.github.io/neuralese-diffusion/ · **Real tier:** https://0thernes.github.io/neuralese-diffusion/real/
 
-## What's new in 3.0.0
+## 3.0.0
 - **Linux desktop app (x64):** an AppImage and a .deb built with Electron (`desktop/`). It bundles the full web app and all self-trained models, so it works offline. The `/real/` pretrained tier downloads its ONNX models at runtime and checks them against the same pinned SHA-256s. CI smoke-tests the packaged app under Xvfb.
 - **LAB node importance, ACDC-lite and loss slice run in a Web Worker,** which fixes the v2 page freeze. They use a copy of the current weights, so surgery edits still count.
 - Version is 3.0.0 everywhere (web, Android versionCode 3, iOS MARKETING_VERSION 3.0.0, desktop).
 
 ## Assets
-- `NeuraleseDiffusion-3.0.0-x86_64.AppImage`: run `chmod +x` and then run the file. Some distros need `libfuse2`.
-- `NeuraleseDiffusion-3.0.0-amd64.deb`: install with `sudo apt install ./NeuraleseDiffusion-3.0.0-amd64.deb`.
+- `NeuraleseDiffusion-3.0.1-x86_64.AppImage`: run `chmod +x` and then run the file. Some distros need `libfuse2`.
+- `NeuraleseDiffusion-3.0.1-amd64.deb`: install with `sudo apt install ./NeuraleseDiffusion-3.0.1-amd64.deb`.
 - `neuralese-diffusion-debug.apk`: Android debug build.
 - `NeuraleseDiffusion-unsigned.ipa`: unsigned. Re-sign it with AltStore or Sideloadly before installing.
 - `NeuraleseDiffusion-simulator.app.zip`: for the iOS Simulator (Xcode).

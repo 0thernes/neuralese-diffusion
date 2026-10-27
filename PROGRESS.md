@@ -62,3 +62,6 @@
 - 20:55 PT version 3.0.0 (package.json, gradle versionCode 3, iOS MARKETING_VERSION 3.0.0, README, RELEASE_NOTES, ROADMAP); npm test 43/43.
 - Plan: workflows (android/ios/pages/linux, dispatch/tag only, node 24) via connector to main; unpack.yml on stage-v2 dispatches WORKFLOWS list; bundle in stage/parts4.
 - 21:10 PT worker verified in headless Chrome: node importance 583.6 s on 8 examples, real result (d1 0.93, u1 0.92 …), max main-thread evaluate latency 9 ms (v2: page frozen). Pushing workflows + bundle.
+- 21:20 PT v3.0.0 released: linux/android/ios/pages CI ✓. All 5 assets downloaded. The released AppImage smoke passed.
+## v3.0.1 (2026-10-26, PT)
+- 23:45 PT merged Dependabot #1 (Electron 42.11.16). Electron 42 broke WebGL without a GPU, so I added the enable-unsafe-swiftshader switch in desktop/main.cjs. Local AppImage smoke passed. Versions are 3.0.1, and the workflows now use github.ref_name.
