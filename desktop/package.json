@@ -1,0 +1,46 @@
+{
+  "name": "neuralese-diffusion-desktop",
+  "productName": "Neuralese Diffusion",
+  "version": "3.0.0",
+  "description": "Neuralese Diffusion desktop app: on-device interpretability lab for tiny diffusion models",
+  "homepage": "https://github.com/0thernes/neuralese-diffusion",
+  "author": {
+    "name": "Alex Donahue",
+    "email": "0thernes@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "main": "main.cjs",
+  "scripts": {
+    "prep": "node prep.cjs",
+    "dist:linux": "node prep.cjs && electron-builder --linux AppImage deb --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "io.github.othernes.neuraleseDiffusion",
+    "productName": "Neuralese Diffusion",
+    "artifactName": "NeuraleseDiffusion-${version}-${arch}.${ext}",
+    "files": [
+      "main.cjs",
+      "www/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "category": "Science",
+      "maintainer": "Alex Donahue <0thernes@users.noreply.github.com>",
+      "synopsis": "Interpretability lab for tiny diffusion models",
+      "executableName": "neuralese-diffusion",
+      "icon": "www/icons/icon-512.png",
+      "syncDesktopName": true
+    },
+    "deb": {
+      "packageName": "neuralese-diffusion"
+    }
+  },
+  "desktopName": "neuralese-diffusion.desktop"
+}

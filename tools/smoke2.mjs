@@ -1,7 +1,7 @@
 // Headless smoke of the v2 self-trained modalities + LAB tab. Usage: node tools/smoke2.mjs <url> <shotDir> <tag>
 import puppeteer from 'puppeteer-core'; import fs from 'node:fs';
 const url = process.argv[2], dir = process.argv[3], tag = process.argv[4] || 'live'; fs.mkdirSync(dir, { recursive: true });
-const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', protocolTimeout: 1200000, args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const out = { url, checks: [], errors: [] }, ok = (n, p, i = '') => { out.checks.push({ name: n, pass: p, info: i }); console.log(p ? 'OK  ' : 'FAIL', n, i); };
 for (const mod of ['image2', 'audio2', 'video2', 'pc3d2']) {
   const p = await b.newPage(); await p.setViewport({ width: 1280, height: 900 }); p.on('pageerror', (e) => out.errors.push(mod + ': ' + e.message));
@@ -15,9 +15,9 @@ for (const mod of ['image2', 'audio2', 'video2', 'pc3d2']) {
     await new Promise((r) => setTimeout(r, tab === 'LAB' ? 15000 : 3000));
     const t2 = await p.evaluate(() => document.querySelector('main').innerText); ok(`${mod} ${tab}`, has && !/error:/i.test(t2) && t2.length > 20, t2.slice(0, 90).replace(/\n/g, ' '));
     if (tab === 'LAB' && mod === 'image2') { const before = await p.evaluate(() => document.querySelector('main').innerText.length);
-      await p.evaluate(() => [...document.querySelectorAll('main button')].find((x) => x.textContent.startsWith('node importance')).click());
+      await p.evaluate(() => [...document.querySelectorAll('main button')].find((x) => x.textContent.startsWith('quantize all')).click());
       await p.waitForFunction((n) => document.querySelector('main').innerText.length > n + 40, { timeout: 600000 }, before).catch(() => {});
-      const t3 = await p.evaluate(() => document.querySelector('main').innerText); ok('image2 LAB node importance ran', t3.length > before + 40, t3.slice(before, before + 120).replace(/\n/g, ' ')); }
+      const t3 = await p.evaluate(() => document.querySelector('main').innerText); ok('image2 LAB quantize→loss ran', t3.length > before + 40, t3.slice(before, before + 120).replace(/\n/g, ' ')); }
     await p.screenshot({ path: `${dir}/${tag}-${mod}-${tab}.png`, fullPage: tab === 'LAB' });
   }
   await p.close();

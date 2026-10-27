@@ -49,3 +49,16 @@
 - 12:53 PT evals (eval.mjs) not finished after ~2h on contended CPU → killed; using train2b DONE metrics (python, n=500) for CLAIMS.
 - 12:58 PT CLAIMS-v2/MODELS regenerated with plain verdicts (video at chance, image FID worse w/ CFG, S4 not completed); npm test 43/43.
 - 13:00 PT pushed ci commit ab2b83e (release workflows → v2.0.0) via connector (GITHUB_TOKEN can't edit workflows).
+- 13:06 PT final bundle (11 parts) + trigger pushed to stage-v2 (TAG v2.0.0).
+- 13:09 PT main 'v2.0.0: …' committed; tag v2.0.0; pages success; android+ios in progress. inc2 smoke 21/21 OK, no page errors.
+- 13:13 PT android ✓ ios ✓ on v2.0.0; release assets checked.
+- 13:27 PT final smoke: LAB node-importance froze page >180 s (sync, main thread) → smoke uses quantize analysis; noted as limitation.
+- 13:42 PT final live smoke (v2.0.0): 22/22 OK, no page errors; 17 screenshots shots/v2/live-v200-*. v2.0.0 DONE.
+
+## v3.0.0 (2026-10-26, PT)
+- 20:40 PT working copy = fresh clone of main (811dd9e) in /tmp/nd, plus local-only smoke2.mjs/PROGRESS from /workspace/neuralese-diffusion.
+- 20:45 PT LAB node importance / ACDC-lite / loss slice moved into a module Web Worker (site/lab-worker.js); app.js inWorker() falls back to main thread; sw cache nd-v3.0.0.
+- 20:48 PT desktop/ Electron wrapper (app:// privileged scheme) → electron-builder AppImage + deb built locally (151 MB / 126 MB); packaged-app smoke under Xvfb: models load, sha256 verified, 0 page errors.
+- 20:55 PT version 3.0.0 (package.json, gradle versionCode 3, iOS MARKETING_VERSION 3.0.0, README, RELEASE_NOTES, ROADMAP); npm test 43/43.
+- Plan: workflows (android/ios/pages/linux, dispatch/tag only, node 24) via connector to main; unpack.yml on stage-v2 dispatches WORKFLOWS list; bundle in stage/parts4.
+- 21:10 PT worker verified in headless Chrome: node importance 583.6 s on 8 examples, real result (d1 0.93, u1 0.92 …), max main-thread evaluate latency 9 ms (v2: page frozen). Pushing workflows + bundle.

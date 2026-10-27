@@ -1,4 +1,4 @@
-# ROADMAP (v2.0.0)
+# ROADMAP (v3.0.0)
 
 100 items. Status counts: done 72, partial 4, planned 20, won't 4. "done" means shipped and the test passes as of v2.0.0; see docs/CLAIMS.md for measured numbers.
 
